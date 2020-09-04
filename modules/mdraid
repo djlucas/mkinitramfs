@@ -1,0 +1,11 @@
+# Begin /usr/lib/mkdinitcpio/mdraid
+
+# /sbin files
+if [ -x /sbin/mdadm ] ; then sbinfiles="${sbinfiles} mdadm"; fi
+if [ -x /sbin/mdadm ] ; then sbinfiles="${sbinfiles} mdmon"; fi
+
+# Copy the RAID configuration file if present
+if [ -f /etc/mdadm.conf ] ; then
+  cp /etc/mdadm.conf ${WDIR}/etc
+fi
+

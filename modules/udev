@@ -1,0 +1,39 @@
+# Begin /usr/lib/mkinitcpio/udev
+
+# /bin files
+binfiles="${binfiles}"
+
+# /sbin files
+if [ -x /sbin/udevd ] ; then sbinfiles="${sbinfiles} udevd"; fi
+
+# Systemd installs udevadm in /bin. Other udev implementations have it in /sbin
+if [ -x /bin/udevadm ] ; then binfiles="$binfiles udevadm"; fi
+if [ -x /sbin/udevadm ]; then sbinfiles="${sbinfiles} udevadm"; fi
+
+# Create udev dirs
+mkdir -p ${WDIR}/etc/udev/rules.d
+
+# Install the udev configuration files
+if [ -f /etc/udev/udev.conf ]; then
+  cp /etc/udev/udev.conf ${WDIR}/etc/udev/udev.conf
+fi
+
+for file in $(find /etc/udev/rules.d/ -type f) ; do
+  cp $file ${WDIR}/etc/udev/rules.d
+done
+
+# Add udevd libraries if not in /sbin
+if [ -x /lib/udev/udevd ] ; then
+  ldd /lib/udev/udevd | sed "s/\t//" | cut -d " " -f1 >> $unsorted
+elif [ -x /lib/systemd/systemd-udevd ] ; then
+  ldd /lib/systemd/systemd-udevd | sed "s/\t//" | cut -d " " -f1 >> $unsorted
+fi
+
+# Copy udev libraries
+if [ -d /lib/udev ]; then
+  cp -a /lib/udev $WDIR/lib
+fi
+if [ -d /lib/systemd ]; then
+  cp -a /lib/systemd $WDIR/lib
+fi
+

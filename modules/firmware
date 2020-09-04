@@ -1,0 +1,10 @@
+# Begin /usr/lib/mkinitcpio/firmware
+
+# Create firmware directory
+mkdir -p ${WDIR}/lib/firmware
+
+# Install any firmware present
+## FIXME - Don't just copy everything, this will be huge if you install all
+cp -a /lib/firmware ${WDIR}/lib
+
+

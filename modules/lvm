@@ -1,0 +1,32 @@
+
+
+# /sbin files
+if [ -x /sbin/lvm ]     ; then sbinfiles="${sbinfiles} lvm";     fi
+if [ -x /sbin/dmsetup ] ; then sbinfiles="${sbinfiles} dmsetup"; fi
+
+# Add lvm symlinks if appropriate
+# Also copy the lvm.conf file
+if  [ -x /sbin/lvm ] ; then
+  ln -s lvm ${WDIR}/sbin/lvchange
+  ln -s lvm ${WDIR}/sbin/lvrename
+  ln -s lvm ${WDIR}/sbin/lvextend
+  ln -s lvm ${WDIR}/sbin/lvcreate
+  ln -s lvm ${WDIR}/sbin/lvdisplay
+  ln -s lvm ${WDIR}/sbin/lvscan
+
+  ln -s lvm ${WDIR}/sbin/pvchange
+  ln -s lvm ${WDIR}/sbin/pvck
+  ln -s lvm ${WDIR}/sbin/pvcreate
+  ln -s lvm ${WDIR}/sbin/pvdisplay
+  ln -s lvm ${WDIR}/sbin/pvscan
+
+  ln -s lvm ${WDIR}/sbin/vgchange
+  ln -s lvm ${WDIR}/sbin/vgcreate
+  ln -s lvm ${WDIR}/sbin/vgscan
+  ln -s lvm ${WDIR}/sbin/vgrename
+  ln -s lvm ${WDIR}/sbin/vgck
+  # Conf file(s)
+  cp -a /etc/lvm ${WDIR}/etc
+fi
+
+
