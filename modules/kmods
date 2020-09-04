@@ -1,0 +1,10 @@
+# Tools
+if [  -n "$KERNEL_VERSION" ] ; then
+  if [ -x /bin/kmod ] ; then
+    binfiles="${binfiles} kmod"
+  else
+    binfiles="${binfiles} lsmod"
+    sbinfiles="${sbinfiles} insmod"
+  fi
+fi
+

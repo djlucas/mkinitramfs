@@ -1,4 +1,4 @@
-
+# Import elogind libraries
 if [ -d /lib/elogind ]; then
   cp -a /lib/elogind $WDIR/lib
 fi
