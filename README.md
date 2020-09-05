@@ -7,23 +7,24 @@ Hooks:
   determines how and when they are used within the script. Modules are
   lcated in the "$DATADIR/modules" directory.
 
-  Input hooks drag in binaries (and their detected libraries) that
-  will be included in the base image, and that do not require any
-  modifications to the init script. These files havd a ".in" extension.
+  Input hooks drag in binaries (and their needed shared libraries) that
+  will be included in the base image, but do not require any
+  modifications to the init script. These hooks have a ".in" extension.
 
-  Output hooks pull in other specific files, such as configuration files,
-  after the base is created. These modules typically require modifications
-  to the init script and have a ".out" extension.
+  Output hooks pull in other specific files, such as configuration and
+  data files, after the base is created. These hooks typically also
+  require an associated init modification and have a ".out" extension.
 
   Standalone hooks create separate image files of their own such as
-  those used for CPU microcode or a busybox rescue image. These modules
+  those used for CPU microcode or a busybox rescue image. These hooks
   have a ".sa" extension.
 
 
 init modifications:
   Any hook can also have an associated init addition containing bash
   scriptlets, located in the "$DATADIR/init/" directory, which will be
-  included in the init script.
+  included in the init script. These scriptlets should match the name
+  of the associated hook and have a ".init" extension.
 
 
 mkinitcpio.conf:
@@ -32,9 +33,9 @@ mkinitcpio.conf:
 
   DATADIR: This is the root directory for the "modules" and "init" files.
 
-  hooks: This is a list of mkinitcpio modules that will be included
-  (without file extensions). The modules will be imported in the order
-  they are listed. This defaults to the udev, elogind, and ucode modules. 
+  hooks: This is a list of mkinitcpio hooks that will be included
+  (without file extensions). The hooks will be imported in the order they
+  are listed. This defaults to the udev, elogind, kmods, and ucode modules. 
 
   firmware: This determines what firmware files are included and is
   releative to the /lib/firmware path. The special keyword "autodetect"
