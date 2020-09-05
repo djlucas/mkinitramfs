@@ -46,7 +46,7 @@ fi
 printf "Creating ${INITRD_FILE}..."
 
 # /bin files for all builds
-binfiles="sh cat cp dd killall ls mkdir mknod mount"
+binfiles="bash cat cp dd killall ls mkdir mknod mount"
 binfiles="${binfiles} umount sed sleep ln rm uname"
 binfiles="${binfiles} readlink basename"
 
@@ -73,13 +73,13 @@ mknod -m 664 "${WDIR}/dev/null"    c 1 3
 # Install the basic init file
 install -m0755 "${DATADIR}/init/init.in.head" "${WDIR}/init"
 
-# Import input modules and init modifications
-for mod in ${initmods}; do
-  if [ -f "${DATADIR}/modules/${mod}.in" ]; then
-    . "${DATADIR}/modules/${mod}.in"
+# Import input hooks and init modifications
+for hook in ${hooks}; do
+  if [ -f "${DATADIR}/hooks/${hook}.in" ]; then
+    . "${DATADIR}/hooks/${hook}.in"
   fi
-  if [ -f "${DATADIR}/init/${mod}.init" ]; then
-    cat "${DATADIR}/init/${mod}.init" >> "${WDIR}/init"
+  if [ -f "${DATADIR}/init/${hook}.init" ]; then
+    cat "${DATADIR}/init/${hook}.init" >> "${WDIR}/init"
     echo "" >> "${WDIR}/init"
   fi
 done
@@ -115,20 +115,20 @@ sort "${unsorted}" | uniq | while read library; do
   copy "${library}" lib
 done
 
-# Import output modules
-for mod in ${initmods}; do
-  if [ -f "${DATADIR}/modules/${mod}.out" ]; then
-    . "${DATADIR}/modules/${mod}.out"
+# Import output hooks
+for hook in ${hooks}; do
+  if [ -f "${DATADIR}/hooks/${hook}.out" ]; then
+    . "${DATADIR}/hooks/${hook}.out"
   fi
 done
 
 ( cd "${WDIR}"; find . | cpio -o -H newc --quiet | gzip -9 ) \
     > "${INITRD_FILE}"
 
-# Import standalone modules (busybox or microcode)
-for mod in ${initmods}; do
-  if [ -f "${DATADIR}/modules/${mod}.sa" ]; then
-    . "${DATADIR}/modules/${mod}.sa"
+# Import standalone hooks (busybox or microcode)
+for hook in ${hooks}; do
+  if [ -f "${DATADIR}/hooks/${hook}.sa" ]; then
+    . "${DATADIR}/hooks/${hook}.sa"
   fi
 done
 

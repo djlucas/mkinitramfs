@@ -17,8 +17,8 @@ if ls /lib/firmware/intel-ucode/* >/dev/null 2>&1 ||
   fi
 
   ( cd $WDIR; find . | cpio -o -H newc --quiet ) > microcode.img
-  cat microcode.img $INITRAMFS_FILE > tmpfile
-  mv tmpfile $INITRAMFS_FILE
+  cat microcode.img $INITRD_FILE > tmpfile
+  mv tmpfile $INITRD_FILE
   rm microcode.img
 fi
 

@@ -40,9 +40,9 @@ install_conf:
            -i $(DESTDIR)$(SYSCONFDIR)/mkinitcpio.conf
 
 install_data:
-	install -vdm755 $(DESTDIR)$(DATADIR)/modules
+	install -vdm755 $(DESTDIR)$(DATADIR)/hooks
 	install -vdm755 $(DESTDIR)$(DATADIR)/init
-	install -vm644  modules/* $(DESTDIR)$(DATADIR)/modules/
+	install -vm644  modules/* $(DESTDIR)$(DATADIR)/hooks/
 	install -vm644  init/*    $(DESTDIR)$(DATADIR)/init/
 
 .PHONY: all install

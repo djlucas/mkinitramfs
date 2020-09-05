@@ -2,28 +2,28 @@ mkinitcpio is a script to generate a modular initrd, taken largely from the
 mkinitramfs script in BLFS. It is not yet feature complete - do not use yet.
 
 
-Modules:
-  Modules can be broken into several parts and their file extension
+Hooks:
+  Hooks can be broken into several parts and their file extension
   determines how and when they are used within the script. Modules are
   lcated in the "$DATADIR/modules" directory.
 
-  Input modules drag in binaries (and their detected libraries) that
+  Input hooks drag in binaries (and their detected libraries) that
   will be included in the base image, and that do not require any
   modifications to the init script. These files havd a ".in" extension.
 
-  Output modules pull in other specific files, such as configuration files,
+  Output hooks pull in other specific files, such as configuration files,
   after the base is created. These modules typically require modifications
   to the init script and have a ".out" extension.
 
-  Standalone modules create separate image files of their own such as
+  Standalone hooks create separate image files of their own such as
   those used for CPU microcode or a busybox rescue image. These modules
   have a ".sa" extension.
 
 
 init modifications:
-  Any module can also have an associated init addition containing bash
+  Any hook can also have an associated init addition containing bash
   scriptlets, located in the "$DATADIR/init/" directory, which will be
-  appened to the init script.
+  included in the init script.
 
 
 mkinitcpio.conf:
@@ -32,7 +32,7 @@ mkinitcpio.conf:
 
   DATADIR: This is the root directory for the "modules" and "init" files.
 
-  initmods: This is a list of mkinitcpio modules that will be included
+  hooks: This is a list of mkinitcpio modules that will be included
   (without file extensions). The modules will be imported in the order
   they are listed. This defaults to the udev, elogind, and ucode modules. 
 
