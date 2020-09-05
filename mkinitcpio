@@ -1,15 +1,15 @@
 #!/bin/bash
-# Begin /usr/sbin/mkinitcpio
+# Begin @SBINDIR@/mkinitcpio
 
 # This file based in part on the mkinitramfs script for the LFS LiveCD
 # written by Alexander E. Patrakov and Jeremy Huntwork.
 
-if [ -f /etc/mkinitcpio.conf ]; then
-  . /etc/mkinitcpio.conf
+if [ -f @SYSCONFDIR@/mkinitcpio.conf ]; then
+  . @SYSCONFDIR@/mkinitcpio.conf
 fi
 
 if [ "x${DATADIR}" == "x" ]; then
-  DATADIR="/usr/lib/mkinitcpio"
+  DATADIR="@DATADIR@"
 fi
 
 copy()
@@ -22,7 +22,7 @@ copy()
     file=$(type -p ${1})
   fi
 
-  if [ -n "$file" ] ; then
+  if [ -n "$file" ]; then
     cp ${file} ${WDIR}/${2}
   else
     echo "Missing required file: ${1} for directory ${2}"
@@ -31,19 +31,19 @@ copy()
   fi
 }
 
-if [ -z ${1} ] ; then
-  INITRD_FILE=initrd.img-no-kmods
+if [ -z ${1} ]; then
+  INITRD_FILE="@BOOTDIR@/initrd.img-no-kmods"
 else
   KERNEL_VERSION="${1}"
-  INITRD_FILE=initrd.img-"${KERNEL_VERSION}"
+  INITRD_FILE="@BOOTDIR@/initrd.img-${KERNEL_VERSION}"
 fi
 
-if [ -n "${KERNEL_VERSION}" ] && [ ! -d "/lib/modules/${1}" ] ; then
+if [ -n "${KERNEL_VERSION}" ] && [ ! -d "/lib/modules/${1}" ]; then
   echo "No modules directory named ${1}"
   exit 1
 fi
 
-printf "Creating ${INITRD_FILE}... "
+printf "Creating ${INITRD_FILE}..."
 
 # /bin files for all builds
 binfiles="sh cat cp dd killall ls mkdir mknod mount"
@@ -73,9 +73,11 @@ mknod -m 664 "${WDIR}/dev/null"    c 1 3
 # Install the basic init file
 install -m0755 "${DATADIR}/init/init.in.head" "${WDIR}/init"
 
-# Import modules and init modifications
-for mod in ${initmods} ; do
-  . "${DATADIR}/modules/${mod}"
+# Import input modules and init modifications
+for mod in ${initmods}; do
+  if [ -f "${DATADIR}/modules/${mod}.in" ]; then
+    . "${DATADIR}/modules/${mod}.in"
+  fi
   if [ -f "${DATADIR}/init/${mod}.init" ]; then
     cat "${DATADIR}/init/${mod}.init" >> "${WDIR}/init"
     echo "" >> "${WDIR}/init"
@@ -85,7 +87,7 @@ done
 cat "${DATADIR}/init.in.tail" >> "${WDIR}/init"
 
 # Install /bin files
-for f in ${binfiles} ; do
+for f in ${binfiles}; do
   if [ -e "/bin/${f}" ]; then d="/bin"; else d="/usr/bin"; fi
   ldd "${d}/${f}" | sed "s/\t//" | cut -d " " -f1 >> "${unsorted}"
   copy "${d}/${f}" bin
@@ -94,13 +96,13 @@ ln -s bash "${WDIR}/bin/sh"
 
 
 # Install /sbin files
-for f in ${sbinfiles} ; do
+for f in ${sbinfiles}; do
   ldd "/sbin/${f}" | sed "s/\t//" | cut -d " " -f1 >> "${unsorted}"
   copy "${f}" sbin
 done
 
 # Install libraries
-sort "${unsorted}" | uniq | while read library ; do
+sort "${unsorted}" | uniq | while read library; do
 # linux-vdso and linux-gate are pseudo libraries and do not correspond to a file
 # libsystemd-shared is in /lib/systemd, so it is not found by copy, and
 # it is copied below anyway
@@ -114,19 +116,24 @@ sort "${unsorted}" | uniq | while read library ; do
 done
 
 # Import output modules
-for mod in ${outmods} ; do
-  . "${DATADIR}/modules/${mod}.out"
+for mod in ${initmods}; do
+  if [ -f "${DATADIR}/modules/${mod}.out" ]; then
+    . "${DATADIR}/modules/${mod}.out"
+  fi
 done
 
-( cd "${WDIR}" ; find . | cpio -o -H newc --quiet | gzip -9 ) \
-    > "${INITRAMFS_FILE}"
+( cd "${WDIR}"; find . | cpio -o -H newc --quiet | gzip -9 ) \
+    > "${INITRD_FILE}"
 
 # Import standalone modules (busybox or microcode)
-for mod in ${samods} ; do
-  . "${DATADIR}/modules/${mod}.sa"
+for mod in ${initmods}; do
+  if [ -f "${DATADIR}/modules/${mod}.sa" ]; then
+    . "${DATADIR}/modules/${mod}.sa"
+  fi
 done
 
 # Remove the temporary directories and files
 rm -rf $WDIR $unsorted
 printf "done.\n"
 
+# End @SBINDIR@/mkinitcpio

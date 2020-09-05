@@ -98,22 +98,3 @@ for param in $cmdline ; do
   esac
 done
 
-# udevd location depends on version
-if [ -x /sbin/udevd ]; then
-  UDEVD=/sbin/udevd
-elif [ -x /lib/udev/udevd ]; then
-  UDEVD=/lib/udev/udevd
-elif [ -x /lib/systemd/systemd-udevd ]; then
-  UDEVD=/lib/systemd/systemd-udevd
-else
-  echo "Cannot find udevd nor systemd-udevd"
-  problem
-fi
-
-${UDEVD} --daemon --resolve-names=never
-udevadm trigger
-udevadm settle
-
-if [ -f /etc/mdadm.conf ] ; then mdadm -As                       ; fi
-if [ -x /sbin/vgchange  ] ; then /sbin/vgchange -a y > /dev/null ; fi
-
