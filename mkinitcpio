@@ -84,7 +84,7 @@ for mod in ${initmods}; do
   fi
 done
 
-cat "${DATADIR}/init.in.tail" >> "${WDIR}/init"
+cat "${DATADIR}/init/init.in.tail" >> "${WDIR}/init"
 
 # Install /bin files
 for f in ${binfiles}; do
