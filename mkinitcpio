@@ -8,6 +8,10 @@ if [ -f /etc/mkinitcpio.conf ]; then
   . /etc/mkinitcpio.conf
 fi
 
+if [ "x${DATADIR}" == "x" ]; then
+  DATADIR="/usr/lib/mkinitcpio"
+fi
+
 copy()
 {
   local file
@@ -42,7 +46,7 @@ fi
 printf "Creating ${INITRD_FILE}... "
 
 # /bin files for all builds
-binfiles="sh cat cp dd killall ls mkdir mknod mount "
+binfiles="sh cat cp dd killall ls mkdir mknod mount"
 binfiles="${binfiles} umount sed sleep ln rm uname"
 binfiles="${binfiles} readlink basename"
 
@@ -51,9 +55,6 @@ sbinfiles="modprobe blkid switch_root"
 
 # Additional files list
 unsorted=$(mktemp /tmp/unsorted.XXXXXXXXXX)
-
-DATADIR=/usr/lib/mkinitcpio
-INITIN=init.in
 
 # Create a temporary working directory
 WDIR=$(mktemp -d /tmp/initrd-work.XXXXXXXXXX)
@@ -77,6 +78,7 @@ for mod in ${initmods} ; do
   . "${DATADIR}/modules/${mod}"
   if [ -f "${DATADIR}/init/${mod}.init" ]; then
     cat "${DATADIR}/init/${mod}.init" >> "${WDIR}/init"
+    echo "" >> "${WDIR}/init"
   fi
 done
 
@@ -121,7 +123,7 @@ done
 
 # Import standalone modules (busybox or microcode)
 for mod in ${samods} ; do
-  . "${DATADIR}/modules/${mod}.out"
+  . "${DATADIR}/modules/${mod}.sa"
 done
 
 # Remove the temporary directories and files

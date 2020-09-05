@@ -1,0 +1,3 @@
+if [ -x /sbin/vgchange  ] ; then
+  /sbin/vgchange -a y > /dev/null
+fi

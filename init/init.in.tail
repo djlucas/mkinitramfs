@@ -1,9 +1,11 @@
-if [ -n "$rootdelay"    ] ; then sleep "$rootdelay"              ; fi
+if [ -n "${rootdelay}"    ] ; then
+  sleep "${rootdelay}"
+fi
 
 do_try_resume # This function will not return if resuming from disk
 do_mount_root
 
 killall -w ${UDEVD##*/}
 
-exec switch_root /.root "$init" "$@"
+exec switch_root /.root "${init}" "${@}"
 

@@ -1,0 +1,3 @@
+if [ -f /etc/mdadm.conf ] ; then
+  mdadm -As
+fi
