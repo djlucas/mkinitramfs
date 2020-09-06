@@ -5,7 +5,7 @@ mkinitramfs script in BLFS. It is not yet feature complete - do not use yet.
 
 <h2>Hooks:</h2>
   Hooks can be broken into several parts and their file extension
-  determines how and when they are used within the script. Modules are
+  determines how and when they are used within the script. Hooks are
   lcated in the "$DATADIR/hooks" directory.</p>
 
   <b>Input hooks</b> drag in binaries (and their needed shared libraries) that
