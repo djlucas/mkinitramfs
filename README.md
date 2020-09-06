@@ -6,7 +6,7 @@ mkinitramfs script in BLFS. It is not yet feature complete - do not use yet.
 <h2>Hooks:</h2>
   Hooks can be broken into several parts and their file extension
   determines how and when they are used within the script. Modules are
-  lcated in the "$DATADIR/modules" directory.
+  lcated in the "$DATADIR/modules" directory.</p>
 
   <b>Input hooks</b> drag in binaries (and their needed shared libraries) that
   will be included in the base image, but do not require any
@@ -30,9 +30,9 @@ mkinitramfs script in BLFS. It is not yet feature complete - do not use yet.
 
 <h2>mkinitcpio.conf:</h2>
   The mkinitcpio.conf file is the primary configuration file and contains
-  four variables that control the operation of mkinitcpio.
+  four variables that control the operation of mkinitcpio.</p>
 
-  <b>DATADIR</b>: This is the root directory for the "modules" and "init" files.
+  <b>DATADIR</b>: This is the root directory for the "hooks" and "init" files.
 
   <b>hooks</b>: This is a list of mkinitcpio hooks that will be included
   (without file extensions). The hooks will be imported in the order they
