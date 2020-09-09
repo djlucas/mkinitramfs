@@ -35,7 +35,7 @@ if [ -z ${1} ]; then
   INITRD_FILE="@BOOTDIR@/initrd.img-no-kmods"
 else
   KERNEL_VERSION="${1}"
-  INITRD_FILE="@BOOTDIR@/initrd.img-${KERNEL_VERSION}"
+  INITRD_FILE="@BOOTDIR@/initrd.img-${KERNEL_VERSION}-${extn}"
 fi
 
 if [ -n "${KERNEL_VERSION}" ] && [ ! -d "/lib/modules/${1}" ]; then
