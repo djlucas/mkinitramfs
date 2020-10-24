@@ -41,10 +41,15 @@ mkinitramfs script in BLFS. It is not yet feature complete - do not use yet.
   <b>firmware</b>: This determines what firmware files are included and is
   releative to the /lib/firmware path. The special keyword "autodetect"
   will try to resolve currently used firmware from the running environment
-  and is the default setting.
+  and is the default setting. A value of "" will pull in the entire firmware
+  directory and is absolutely NOT recommended unless your /lib/firmware
+  directory is limited to the specific firmware blobs that you need.
 
-  <b>modules</b>: This detemines what kernel modules are included in the initrd
-  environment. The special keyword "autodetect" will try to resolve the
-  currently loaded modules from the running environment and is the
-  default setting.
+  <b>modules</b>: This detemines what kernel modules are included in the
+  initrd environment. The special keyword "autodetect" will try to resolve
+  the currently loaded modules from the running environment and is the default
+  setting. A value of "" will pull in a failsfe set with all fs, crypto, mass
+  storage, and usb modules. You can also provide a space separated list of
+  module names (with .ko{,.xz} extension if appropriate).
+
 
