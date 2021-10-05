@@ -1,11 +1,11 @@
 #!/bin/bash
-# Begin @SBINDIR@/mkinitcpio
+# Begin @SBINDIR@/mkinitramfs
 
 # This file based in part on the mkinitramfs script for the LFS LiveCD
 # written by Alexander E. Patrakov and Jeremy Huntwork.
 
-if [ -f @SYSCONFDIR@/mkinitcpio.conf ]; then
-  . @SYSCONFDIR@/mkinitcpio.conf
+if [ -f @SYSCONFDIR@/mkinitramfs.conf ]; then
+  . @SYSCONFDIR@/mkinitramfs.conf
 fi
 
 if [ "x${DATADIR}" == "x" ]; then
@@ -136,4 +136,4 @@ done
 rm -rf $WDIR $unsorted
 printf "done.\n"
 
-# End @SBINDIR@/mkinitcpio
+# End @SBINDIR@/mkinitramfs

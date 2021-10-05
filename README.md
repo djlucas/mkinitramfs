@@ -1,6 +1,6 @@
-<h1>mkinitramfs</h1>
+<h1>mkinitrd</h1>
 
-<b>mkinitramfs</b> is a script to generate a modular init ramdisk, taken largely from the
+<b>mkinitrd</b> is a script to generate a modular init ramdisk, taken largely from the
 mkinitramfs script in BLFS. It is not yet feature complete - do not use yet.
 
 <h2>Hooks:</h2>
@@ -29,12 +29,12 @@ mkinitramfs script in BLFS. It is not yet feature complete - do not use yet.
 
 
 <h2>mkinitramfs.conf:</h2>
-  The mkinitcpio.conf file is the primary configuration file and contains
-  four variables that control the operation of mkinitcpio.</p>
+  The mkinitrd.conf file is the primary configuration file and contains
+  four variables that control the operation of mkinitrd.</p>
 
   <b>DATADIR</b>: This is the root directory for the "hooks" and "init" files.
 
-  <b>hooks</b>: This is a list of mkinitcpio hooks that will be included
+  <b>hooks</b>: This is a list of mkinitrd hooks that will be included
   (without file extensions). The hooks will be imported in the order they
   are listed. This defaults to the udev, elogind, kmods, and ucode modules. 
 
