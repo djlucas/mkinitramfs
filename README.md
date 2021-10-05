@@ -1,6 +1,6 @@
-<h1>mkinitcpio</h1>
+<h1>mkinitramfs</h1>
 
-<b>mkinitcpio</b> is a script to generate a modular initrd, taken largely from the
+<b>mkinitramfs</b> is a script to generate a modular init ramdisk, taken largely from the
 mkinitramfs script in BLFS. It is not yet feature complete - do not use yet.
 
 <h2>Hooks:</h2>
@@ -28,7 +28,7 @@ mkinitramfs script in BLFS. It is not yet feature complete - do not use yet.
   of the associated hook and have a ".init" extension.
 
 
-<h2>mkinitcpio.conf:</h2>
+<h2>mkinitramfs.conf:</h2>
   The mkinitcpio.conf file is the primary configuration file and contains
   four variables that control the operation of mkinitcpio.</p>
 
